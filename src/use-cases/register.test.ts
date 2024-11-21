@@ -1,15 +1,22 @@
-import { expect, describe, it } from "vitest";
+import { expect, describe, it, beforeEach } from "vitest";
 import { RegisterUseCase } from "./register";
 import { InMemoryUserRepository } from "@/repositories/in-memory/in-memory-users-repository";
 import bcryptjs from "bcryptjs";
 import { UserAlreadyExistError } from "./errors/user-already-exists-error";
 
+let usersRepository: InMemoryUserRepository;
+let sut: RegisterUseCase;
+
 describe("Register Use Case", () => {
+  beforeEach(() => {
+    usersRepository = new InMemoryUserRepository();
+    sut = new RegisterUseCase(usersRepository);
+  });
   it("should be able to register", async () => {
     const usersRepository = new InMemoryUserRepository();
-    const registerUseCase = new RegisterUseCase(usersRepository);
+    const sut = new RegisterUseCase(usersRepository);
 
-    const { user } = await registerUseCase.execute({
+    const { user } = await sut.execute({
       name: "Johndoe",
       email: "Johndeoeeee@example.com",
       password: "123456",
@@ -24,11 +31,7 @@ describe("Register Use Case", () => {
   });
 
   it("should hash user password upon registration", async () => {
-    const usersRepository = new InMemoryUserRepository();
-
-    const registerUseCase = new RegisterUseCase(usersRepository);
-
-    const { user } = await registerUseCase.execute({
+    const { user } = await sut.execute({
       name: "Johndoe",
       email: "Johndeoeeee@example.com",
       password: "123456",
@@ -43,21 +46,18 @@ describe("Register Use Case", () => {
   });
 
   it("should not be able to register with the same email twice", async () => {
-    const usersRepository = new InMemoryUserRepository();
-    const registerUseCase = new RegisterUseCase(usersRepository);
-
     const email = "Johndoe@example.com";
 
-    await registerUseCase.execute({
+    await sut.execute({
       name: "Johndoe",
       email,
       password: "123456",
     });
 
-    // graças ao callback a promise será executada, promise retorna resolve || reject
+    //  promise será executada, promise retorna resolve || reject
     // reject espera que o erro seja uma instância do erro quando verificamos se existe uma email igual lá na classe RegisterUseCase
     await expect(
-      registerUseCase.execute({
+      sut.execute({
         name: "Johndoe",
         email,
         password: "123456",

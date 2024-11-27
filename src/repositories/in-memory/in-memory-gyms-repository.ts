@@ -9,7 +9,7 @@ export class InMemoryGymRepository implements GymsRepository {
       return currencyItem.id === id;
     });
 
-    if (gym === undefined) {
+    if (!gym) {
       return null;
     }
 

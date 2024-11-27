@@ -21,8 +21,8 @@ describe("Check in Use Case", () => {
       title: "Javascript gym",
       description: "",
       phone: "",
-      latitude: new Decimal(0),
-      longitude: new Decimal(0),
+      latitude: new Decimal(-7.9703027),
+      longitude: new Decimal(-35.0312336),
     });
   });
 
@@ -30,12 +30,12 @@ describe("Check in Use Case", () => {
     // Ajusta a data a cada test rodado
     vi.useRealTimers();
   });
-  it("should create check in", async () => {
+  it("should be able create check in", async () => {
     const { checkIn } = await sut.execute({
       gymId: "gym-01",
       userId: "user-01",
-      userLatitude: 0,
-      userLongitude: 0,
+      userLatitude: -7.9703027,
+      userLongitude: -35.0312336,
     });
 
     expect(checkIn.id).toEqual(expect.any(String));
@@ -50,7 +50,7 @@ describe("Check in Use Case", () => {
     await sut.execute({
       gymId: "gym-01",
       userId: "user-01",
-      userLatitude: 7.9703027,
+      userLatitude: -7.9703027,
       userLongitude: -35.0312336,
     });
 
@@ -58,11 +58,14 @@ describe("Check in Use Case", () => {
       sut.execute({
         gymId: "gym-01",
         userId: "user-01",
-        userLatitude: 7.9703027,
+        userLatitude: -7.9703027,
         userLongitude: -35.0312336,
       }),
     ).rejects.toBeInstanceOf(Error);
   });
+
+  // latitude and longitude
+  // -7.8917151,-35.0500605
 
   it("should be able to check in twice but in different days", async () => {
     // setando a data do teste
@@ -71,7 +74,7 @@ describe("Check in Use Case", () => {
     await sut.execute({
       gymId: "gym-01",
       userId: "user-01",
-      userLatitude: 7.9703027,
+      userLatitude: -7.9703027,
       userLongitude: -35.0312336,
     });
 
@@ -80,10 +83,30 @@ describe("Check in Use Case", () => {
     const { checkIn } = await sut.execute({
       gymId: "gym-01",
       userId: "user-01",
-      userLatitude: 7.9703027,
+      userLatitude: -7.9703027,
       userLongitude: -35.0312336,
     });
 
     expect(checkIn.id).toEqual(expect.any(String));
+  });
+
+  it("should not be able to check in on distant gym", async () => {
+    gymsRepository.items.push({
+      id: "gym-2",
+      title: "Javascript gym",
+      description: "",
+      phone: "",
+      latitude: new Decimal(-7.9703027),
+      longitude: new Decimal(-35.0500605),
+    });
+
+    await expect(() =>
+      sut.execute({
+        gymId: "gym-02",
+        userId: "user-01",
+        userLatitude: -7.8917151,
+        userLongitude: -35.0312336,
+      }),
+    ).rejects.toBeInstanceOf(Error);
   });
 });

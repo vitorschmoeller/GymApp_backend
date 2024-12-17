@@ -1,0 +1,22 @@
+name: Run Unit Tests
+# Será executado quando houver pushs
+on: [push]
+# quando acontecer o git push, será executado um sequência de tarefas
+jobs: 
+  run-unit-tests:
+    name: Run Unit Tests
+    # Será executada numa maquina com linux ubuntu-latest(docker)
+    runs-on: ubuntu-latest
+    # Passos que eu quero que o jobs execute
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with: 
+          node-version: 18
+          cache: "npm"
+      
+      - run: npm ci
+
+      - run: npm run test
+

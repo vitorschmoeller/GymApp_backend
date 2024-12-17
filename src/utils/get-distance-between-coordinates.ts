@@ -1,14 +1,14 @@
 export interface Coordinate {
-  latidute: number;
+  latitude: number;
   longitude: number;
 }
 
-export function getDistaceBetweenCordinates(from: Coordinate, to: Coordinate) {
-  if (from.latidute === to.latidute && from.longitude === to.longitude) {
+export function getDistaceBetweenCoordinates(from: Coordinate, to: Coordinate) {
+  if (from.latitude === to.latitude && from.longitude === to.longitude) {
     return 0;
   }
 
-  const fromRadian = (Math.PI * from.latidute) / 180;
+  const fromRadian = (Math.PI * from.latitude) / 180;
   const toRadian = (Math.PI * to.longitude) / 180;
 
   const theta = from.longitude - to.longitude;

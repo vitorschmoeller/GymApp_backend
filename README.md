@@ -30,3 +30,6 @@ GymPass style app.
 - [x] the aplication data must be persisted in the database
 - [x] All lists of data must be paginate with 20 items per page;
 - [x] The user must be identify byt a JWT (JSON WEB Token);
+
+
+- [] Teste E2E

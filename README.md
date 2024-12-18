@@ -32,4 +32,4 @@ GymPass style app.
 - [x] The user must be identify byt a JWT (JSON WEB Token);
 
 
-- [] Teste E2E
+- [x] Teste E2E

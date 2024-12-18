@@ -3,7 +3,7 @@ import { execSync } from "node:child_process";
 import type { Environment } from "vitest";
 import "dotenv/config";
 import { PrismaClient } from "@prisma/client";
-// postgresql://docker:docker@localhost:5434/apisolid?schema=public
+
 // bcdedit /set hypervisorlaunchtype auto
 // bcdedit /set hypervisorlaunchtype off
 

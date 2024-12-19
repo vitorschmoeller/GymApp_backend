@@ -3,7 +3,7 @@
 
 version: '3.8'
 
-services: 
+services:
   app:
     build:
       context: .
@@ -11,20 +11,17 @@ services:
     ports:
       - "3333:3333"
     environment:
-      DATABASE_URL: "postgresql://docker:docker@api-solid-pg:5434/apisolid?schema=public"
+      DATABASE_URL: "postgresql://docker:docker@api-solid-pg:5432/apisolid?schema=public"
     depends_on:
       - api-solid-pg
 
   api-solid-pg:
     image: bitnami/postgresql:latest
-    ports:
-      - "5434:5432"
     environment:
       - POSTGRESQL_USERNAME=docker
       - POSTGRESQL_PASSWORD=docker
       - POSTGRESQL_DATABASE=apisolid
+    ports:
+      - "5432:5432"
     volumes:
       - db_data:/bitnami/postgresql
-
-volumes:
-  db_data:

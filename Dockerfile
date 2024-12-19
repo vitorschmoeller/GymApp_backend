@@ -16,5 +16,7 @@ COPY . .
 # Compile o TypeScript
 RUN npm run build
 
+EXPOSE 3333
+
 # Comando para rodar a aplicação
 CMD ["node", "build/server.js"]
